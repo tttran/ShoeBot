@@ -1,15 +1,33 @@
+import requests
+import bs4
+import random
+import webbrowser
 
-def URLgen(model, size):
-	baseSize = 580
+# Base URL =  http://www.adidas.com/us/BB9043.html?forceSelSize=BB9043_600
+#headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
-	shoeSize = size - 6.5
-	shoeSize = shoeSize * 20
-	rawSize = shoeSize + baseSize
-	shoeSizeCode = int(rawSize)
-	URL = 'http://www.adidas.com/us/' + str(model) + '.html?forceSelSize=' + str(model) + '_' + str(shoeSizeCode)
+def URLGen(model, size):
+	BaseSize = 580
+	#Base Size is for Shoe Size 6.5
+	ShoeSize = size - 6.5
+	ShoeSize = ShoeSize * 20
+	RawSize = ShoeSize + BaseSize
+	ShoeSizeCode = int(RawSize)
+	URL = 'http://www.adidas.com/us/' + str(model) + '.html?forceSelSize=' + str(model) + '_' + str(ShoeSizeCode)
 	return URL
+def CheckStock(url, model):
+	headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+	RawHTML = requests.get(url, headers=headers)
+	Page = bs4.BeautifulSoup(RawHTML.text, "lxml")
+	ListOfRawSizes = Page.select('.size-dropdown-block')
+	Sizes = str(ListOfRawSizes[0].getText()).replace('\t', '')
+	Sizes = Sizes.replace('\n\n', ' ')
+	Sizes = Sizes.split()
+	Sizes.remove('Select')
+	Sizes.remove('size')
+	for size in Sizes:
+		print(str(model) + ' Size: ' + str(size) + ' Available')
 
-model = raw_input('Model #')
-size = input('Size: ')
-URL = URLgen(model, size)
-print (str(URL))
+def Main(model, size):
+	url = URLGen(model, size)
+	CheckStock(url, model)
