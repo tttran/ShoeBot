@@ -28,6 +28,6 @@ def CheckStock(url, model):
 	for size in Sizes:
 		print(str(model) + ' Size: ' + str(size) + ' Available')
 
-def Main(model, size):
+def main(model, size):
 	url = URLGen(model, size)
 	CheckStock(url, model)
