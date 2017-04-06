@@ -13,7 +13,7 @@ proxies = {
 			'https': '37.48.118.90:13012',
 		}
 
-ModelNumber = 'BB9043'
+ModelNumber = 'BB1973'
 SizeList = [9, 13, 4, 10]
 ThreadCount = 10
 
@@ -49,8 +49,8 @@ def URLGen(model, size):
 	ShoeSizeCode = int(RawSize)
 	URL = 'http://www.adidas.com/us/' + str(model) + '.html?forceSelSize=' + str(model) + '_' + str(ShoeSizeCode)
 	return URL
-def CheckStock(url):
-	RawHTML = requests.get(url, headers=RandomHeaders.LoadHeader(), proxies = proxies)
+def CheckStock(url, model):
+	RawHTML = requests.get(url, headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})#headers=RandomHeaders.LoadHeader(), proxies = proxies)
 	Page = bs4.BeautifulSoup(RawHTML.text, "lxml")
 	ListOfRawSizes = Page.select('.size-dropdown-block')
 	Sizes = str(ListOfRawSizes[0].getText()).replace('\t', '')
@@ -58,12 +58,13 @@ def CheckStock(url):
 	Sizes = Sizes.split()
 	Sizes.remove('Select')
 	Sizes.remove('size')
-	return Sizes
+	for size in Sizes:
+		print(str(model) + ' Size: ' + str(size) + ' Available')
 
 def main(model, size):
 	url = URLGen(model, size)
-	CheckStock(url)
+	CheckStock(url, model)
 
-threads = [threading.Thread(name='ThreadNumber{}'.format(n), target=SneakerBot, args=(ModelNumber, size,)) for size in SizeList for n in range(ThreadCount)]
-for t in threads: t.start()
+#threads = [threading.Thread(name='ThreadNumber{}'.format(n), target=SneakerBot, args=(ModelNumber, size,)) for size in SizeList for n in range(ThreadCount)]
+#for t in threads: t.start()
 
