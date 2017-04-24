@@ -8,11 +8,12 @@ import RandomHeaders
 # Base URL =  http://www.adidas.com/us/BB9043.html?forceSelSize=BB9043_600
 #headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
+#edit proxies
 proxies = {
 			'http': '37.48.118.90:13012',
 			'https': '37.48.118.90:13012',
 		}
-
+#check model number for specific shoe that is desired
 ModelNumber = 'BB1973'
 SizeList = [9, 13, 4, 10]
 ThreadCount = 10
