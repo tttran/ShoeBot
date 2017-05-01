@@ -10,8 +10,6 @@ import RandomHeaders
 
 #edit proxies
 proxies = {
-			'http': '37.48.118.90:13012',
-			'https': '37.48.118.90:13012',
 		}
 #check model number for specific shoe that is desired
 ModelNumber = 'BB1973'
@@ -30,7 +28,6 @@ def SneakerBot(model, size=None):
 			url = 'http://www.adidas.com/us/{}.html?'.format(model)
 			Sizes = CheckStock(url)
 			if size != None:
-				#If you didn't input size
 				if str(size) in Sizes:
 					DoSomething()
 			else:
